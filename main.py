@@ -21,14 +21,14 @@ logging.basicConfig(
 )
 
 class EncryptionManager:
-    """Handles encryption/decryption of credentials."""
+    # Handles encryption/decryption of credentials.
     
     def __init__(self, master_password: str):
         self.master_password = master_password
         self.cipher = self._generate_cipher()
     
     def _generate_cipher(self):
-        salt = b'L!N4p0N9S012ZY)JPsGf@nHz-_zG-PEt4SYiHwk:+EjkilgJYyfga5*xkM.b6qp@EwAj=Wr0XHKM/vp?byG4d:)DF3sGm1z)zz6.o:W967C#pNlZo-O?DIMdN0Ghd!Pc'
+        salt = b'flaviandev_2025'  # Placeholder salt; use a secure random salt and store it safely
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
@@ -45,7 +45,7 @@ class EncryptionManager:
         return self.cipher.decrypt(encrypted_data.encode()).decode()
 
 class PasswordGenerator:
-    """Generates strong random passwords."""
+    # Generates strong random passwords.
     
     @staticmethod
     def generate(length: int = 16, use_uppercase: bool = True,
@@ -68,7 +68,7 @@ class PasswordGenerator:
         return password
 
 class Credential:
-    """Represents a credential entry."""
+    # Represents a credential entry.
     
     def __init__(self, service: str, username: str, password: str,
                  notes: str = "", tags: str = "", created_date: str = None):
@@ -94,7 +94,7 @@ class Credential:
         return Credential(**data)
 
 class CredentialManager:
-    """Manages credential storage and retrieval."""
+    # Manages credential storage and retrieval.
     
     def __init__(self, encryption_manager: EncryptionManager, filepath: str = "credentials.enc"):
         self.encryption_manager = encryption_manager
@@ -156,7 +156,7 @@ class CredentialManager:
         return [cred for cred in self.credentials if tag.lower() in cred.tags.lower()]
 
 class LoginWindow(tk.Tk):
-    """Master password login window."""
+    # Master password login window.
     
     def __init__(self):
         super().__init__()
@@ -184,7 +184,7 @@ class LoginWindow(tk.Tk):
         ttk.Button(button_frame, text="Login", command=self.login).pack(side=tk.LEFT, padx=5)
         ttk.Button(button_frame, text="Exit", command=self.quit).pack(side=tk.LEFT, padx=5)
 
-        ttk.Label(frame, text="Password Manager made by Dinca Flavian, 2025", font=("Arial", 8)).pack()
+        ttk.Label(frame, text="Password Manager made by @flaviandev, 2025", font=("Arial", 8)).pack()
     
     def center_window(self):
         self.update_idletasks()
@@ -204,7 +204,7 @@ class LoginWindow(tk.Tk):
         self.destroy()
 
 class CredentialDialog(tk.Toplevel):
-    """Dialog for adding/editing credentials."""
+    # Dialog for adding/editing credentials.
     
     def __init__(self, parent, credential: Credential = None):
         super().__init__(parent)
@@ -325,7 +325,7 @@ class CredentialDialog(tk.Toplevel):
         self.destroy()
 
 class PasswordManagerApp(tk.Tk):
-    """Main application window."""
+    # Main application window.
     
     def __init__(self, credential_manager: CredentialManager):
         super().__init__()
