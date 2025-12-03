@@ -67,7 +67,7 @@
  [],
  False,
  False,
- 1764783514,
+ 1764798662,
  [('runw.exe',
    'c:\\Users\\Flavian\\Documents\\GitHub\\PasswordManager\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\runw.exe',
    'EXECUTABLE')],

@@ -100,6 +100,7 @@ class CredentialManager:
         self.encryption_manager = encryption_manager
         self.filepath = filepath
         self.credentials = []
+        self.failed_load = False
         self.load_credentials()
     
     def load_credentials(self):
@@ -114,6 +115,7 @@ class CredentialManager:
             except Exception as e:
                 logging.error(f"Error loading credentials: {e}")
                 messagebox.showerror("Error", "Failed to load credentials")
+                self.failed_load = True
     
     def save_credentials(self):
         try:
@@ -164,7 +166,7 @@ class LoginWindow(tk.Tk):
         self.geometry("400x140")
         self.resizable(False, False)
         self.result = None
-        
+
         self._create_widgets()
         self.center_window()
     
@@ -332,18 +334,23 @@ class PasswordManagerApp(tk.Tk):
         self.title("Password Manager")
         self.geometry("900x600")
         self.credential_manager = credential_manager
-        
+
         self._create_widgets()
         self.refresh_table()
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
     
     def _create_widgets(self):
+        button_state = tk.DISABLED
+        
+        if not self.credential_manager.failed_load:
+            button_state = tk.NORMAL
+
         # Menu bar
         menubar = tk.Menu(self)
         self.config(menu=menubar)
         
         file_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="File", menu=file_menu)
+        menubar.add_cascade(label="Backup", menu=file_menu)
         file_menu.add_command(label="Export Backup", command=self.export_backup)
         file_menu.add_command(label="Import Backup", command=self.import_backup)
         file_menu.add_separator()
@@ -358,11 +365,11 @@ class PasswordManagerApp(tk.Tk):
         self.search_entry.pack(side=tk.LEFT, padx=5)
         self.search_entry.bind("<KeyRelease>", lambda e: self.search_credentials())
         
-        ttk.Button(top_frame, text="Add", command=self.add_credential).pack(side=tk.LEFT, padx=2)
-        ttk.Button(top_frame, text="Edit", command=self.edit_credential).pack(side=tk.LEFT, padx=2)
-        ttk.Button(top_frame, text="Delete", command=self.delete_credential).pack(side=tk.LEFT, padx=2)
-        ttk.Button(top_frame, text="Copy Password", command=self.copy_password).pack(side=tk.LEFT, padx=2)
-        ttk.Button(top_frame, text="Refresh", command=self.refresh_table).pack(side=tk.LEFT, padx=2)
+        ttk.Button(top_frame, text="Add", command=self.add_credential, state=button_state).pack(side=tk.LEFT, padx=2)
+        ttk.Button(top_frame, text="Edit", command=self.edit_credential, state=button_state).pack(side=tk.LEFT, padx=2)
+        ttk.Button(top_frame, text="Delete", command=self.delete_credential, state=button_state).pack(side=tk.LEFT, padx=2)
+        ttk.Button(top_frame, text="Copy Password", command=self.copy_password, state=button_state).pack(side=tk.LEFT, padx=2)
+        ttk.Button(top_frame, text="Refresh", command=self.refresh_table, state=button_state).pack(side=tk.LEFT, padx=2)
         
         # Table frame
         table_frame = ttk.Frame(self)
