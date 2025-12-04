@@ -101,9 +101,8 @@ class CredentialManager:
         self.filepath = filepath
         self.credentials = []
         self.failed_load = False
-        self.load_credentials()
     
-    def load_credentials(self):
+    def load_credentials(self, silent: bool = False):
         if os.path.exists(self.filepath):
             try:
                 with open(self.filepath, 'r') as f:
@@ -111,10 +110,12 @@ class CredentialManager:
                     decrypted_data = self.encryption_manager.decrypt(encrypted_data)
                     data = json.loads(decrypted_data)
                     self.credentials = [Credential.from_dict(cred) for cred in data]
-                    logging.info("Credentials loaded successfully")
+                    if not silent:
+                        logging.info("Credentials loaded successfully")
             except Exception as e:
-                logging.error(f"Error loading credentials: {e}")
-                messagebox.showerror("Error", "Failed to load credentials")
+                if not silent:
+                    logging.error(f"Error loading credentials: {e}")
+                    messagebox.showerror("Error", "Failed to load credentials")
                 self.failed_load = True
     
     def save_credentials(self):
@@ -201,7 +202,10 @@ class LoginWindow(tk.Tk):
         if not password:
             messagebox.showwarning("Warning", "Please enter a password")
             return
-        
+        if len(password) < 12:
+            messagebox.showwarning("Warning", "Password must be at least 12 characters long")
+            return
+
         self.result = password
         self.destroy()
 
@@ -214,7 +218,7 @@ class CredentialDialog(tk.Toplevel):
         self.geometry("500x300")
         self.resizable(False, False)
         self.result = None
-        
+
         self.credential = credential
         self._create_widgets()
     
@@ -240,9 +244,12 @@ class CredentialDialog(tk.Toplevel):
         self.password_entry = ttk.Entry(password_frame, width=30, show="*")
         self.password_entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
         
+        ttk.Button(password_frame, text="Show/Hide", width=10,
+                  command=self.show_password).pack(side=tk.LEFT, padx=3)
+
         ttk.Button(password_frame, text="Generate", width=10,
-                  command=self.generate_password).pack(side=tk.LEFT, padx=5)
-        
+                  command=self.generate_password).pack(side=tk.LEFT, padx=3)
+
         # Tags
         ttk.Label(main_frame, text="Tags").grid(row=3, column=0, sticky=tk.W, pady=5)
         self.tags_entry = ttk.Entry(main_frame, width=40)
@@ -269,6 +276,50 @@ class CredentialDialog(tk.Toplevel):
             self.tags_entry.insert(0, self.credential.tags)
             self.notes_text.insert("1.0", self.credential.notes)
     
+    def show_password(self):
+        if self.password_entry.cget('show') == '*':
+            ver_window = tk.Toplevel(self)
+            ver_window.title("Verify Master Password")
+            ver_window.geometry("400x120")
+            ver_window.resizable(False, False)
+
+            frame = ttk.Frame(ver_window, padding="10")
+            frame.pack(fill=tk.BOTH, expand=True)
+            
+            ttk.Label(frame, text="Enter Master Password:", font=("Arial", 10)).pack()
+            
+            def verified():
+                if self.password_entry.cget('show') == '*':
+                    encryption_manager = EncryptionManager(self.verifiy_entry.get())
+                    credential_manager = CredentialManager(encryption_manager)
+                    credential_manager.load_credentials(silent=True)
+                    if credential_manager.failed_load:
+                        messagebox.showerror("Error", "Incorrect Master Password")
+                        logging.error(f"Incorrect Master Password entered for password reveal: [{self.credential.service} | {self.credential.username}]")
+                        ver_window.destroy()
+                        return
+                    else:
+                        logging.info(f"Master Password verified for password reveal: [{self.credential.service} | {self.credential.username}]")
+                        self.password_entry.config(show='')
+                        ver_window.destroy()
+                else:
+                    self.password_entry.config(show='*')
+
+            self.verifiy_entry = ttk.Entry(frame, show="*", width=40)
+            self.verifiy_entry.pack(pady=4)
+            self.verifiy_entry.bind("<Return>", lambda e: verified)
+            
+            button_frame = ttk.Frame(frame)
+            button_frame.pack(pady=10)
+            
+
+            ttk.Button(button_frame, text="Verify", command=verified).pack(side=tk.LEFT, padx=5)
+            ttk.Button(button_frame, text="Exit", command=ver_window.destroy).pack(side=tk.LEFT, padx=5)
+        else:
+            self.password_entry.config(show='*')
+
+        
+
     def generate_password(self):
         gen_window = tk.Toplevel(self)
         gen_window.title("Generate Password")
@@ -533,7 +584,7 @@ def main():
         try:
             encryption_manager = EncryptionManager(login.result)
             credential_manager = CredentialManager(encryption_manager)
-            
+            credential_manager.load_credentials()
             app = PasswordManagerApp(credential_manager)
             app.mainloop()
         except Exception as e:
