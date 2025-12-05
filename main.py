@@ -47,7 +47,7 @@ class EncryptionManager:
     def _generate_cipher(self):
         image_hash = self._image_hash()
         if image_hash is None:
-            raise ValueError("Invalid image path or unable to read image")
+            image_hash = ''
         combined_password = (self.master_password + image_hash)
         salt = b'flaviandev_2025'  # Placeholder salt; use a secure random salt and store it safely
         kdf = PBKDF2HMAC(
@@ -253,11 +253,6 @@ class LoginWindow(tk.Tk):
             self.attributes('-topmost', True)
             self.after(0, lambda: self.attributes('-topmost', False))
             return
-        if not image_path or not os.path.exists(image_path):
-            messagebox.showwarning("Warning", "Please select a valid PNG or JPG image")
-            self.attributes('-topmost', True)
-            self.after(0, lambda: self.attributes('-topmost', False))
-            return
 
         self.result = {'password': password, 'image_path': image_path}
         self.destroy()
@@ -284,7 +279,7 @@ class VerifyWindowWindow(tk.Toplevel):
         ttk.Label(main_frame, text="Master Password:", font=('Segoe UI', 10, 'bold')).pack(anchor=tk.W, pady=(0, 10))
         self.password_entry = ttk.Entry(main_frame, show="•", width=50)
         self.password_entry.pack(fill=tk.X, pady=(0, 10))
-        self.password_entry.bind("<Return>", lambda e: self.login())
+        self.password_entry.bind("<Return>", lambda e: self.verify)
         
         # Image section
         ttk.Label(main_frame, text="Image-Based Password:", font=('Segoe UI', 10, 'bold')).pack(anchor=tk.W, pady=(10, 5))
@@ -326,11 +321,6 @@ class VerifyWindowWindow(tk.Toplevel):
         image_path = self.image_path_var.get() or None
         if not password:
             messagebox.showwarning("Warning", "Please enter a password")
-            self.attributes('-topmost', True)
-            self.after(0, lambda: self.attributes('-topmost', False))
-            return
-        if not image_path or not os.path.exists(image_path):
-            messagebox.showwarning("Warning", "Please select a valid PNG or JPG image")
             self.attributes('-topmost', True)
             self.after(0, lambda: self.attributes('-topmost', False))
             return
@@ -487,12 +477,112 @@ class PasswordManagerApp(tk.Tk):
         self.title("Password Manager")
         self.geometry("1000x650")
         self.credential_manager = credential_manager
+        self.is_locked = False
+        self.dialog_open = False
+        self.verify_in_progress = False
+        
         self.clipboard_timer = 0
+        self.idle_timer = 60000
+        self.idle_timeout = None
 
         self._create_widgets()
         self.refresh_table()
+        
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.bind("<Unmap>", self.on_minimize)
+        self.bind("<Map>", self.on_restore)
+        self.bind("<Motion>", self.reset_idle_timer)
+        self.bind("<KeyPress>", self.reset_idle_timer)
+        self.bind_all("<Motion>", self.reset_idle_timer)
+        self.bind_all("<KeyPress>", self.reset_idle_timer)
     
+    def lock_application(self):
+        self.is_locked = True
+        
+        self.add_button.config(state=tk.DISABLED)
+        self.edit_button.config(state=tk.DISABLED)
+        self.delete_button.config(state=tk.DISABLED)
+        self.refresh_button.config(state=tk.DISABLED)
+        self.copy_password_button.config(state=tk.DISABLED)
+        self.search_entry.config(state=tk.DISABLED)
+    
+    def unlock_application(self):
+        self.is_locked = False
+        
+        self.add_button.config(state=tk.NORMAL)
+        self.edit_button.config(state=tk.NORMAL)
+        self.delete_button.config(state=tk.NORMAL)
+        self.refresh_button.config(state=tk.NORMAL)
+        self.copy_password_button.config(state=tk.NORMAL)
+        self.search_entry.config(state=tk.NORMAL)
+
+    def reset_idle_timer(self, event=None):
+        if self.dialog_open or self.is_locked:
+            self.after_cancel(self.idle_timeout)
+            return
+
+        if self.idle_timeout:
+            self.after_cancel(self.idle_timeout)
+        
+        if not self.is_locked:
+            self.idle_timeout = self.after(self.idle_timer, self.lock_on_idle)
+
+    def on_minimize(self, event=None):
+        if self.idle_timer:
+            self.after_cancel(self.idle_timer)
+
+        if not self.is_locked:
+            self.lock_application()
+            self.status_var.set("Application locked due to being minimized - please re-verify to unlock")
+            logging.info("Application minimized - locked")
+    
+    def lock_on_idle(self):
+        if not self.is_locked and not self.verify_in_progress:
+            self.verify_in_progress = True
+            self.lock_application()
+            
+            self.status_var.set("Application locked due to inactivity - please re-verify to unlock")
+            logging.info("Application locked due to inactivity")
+            
+            self.verify_and_unlock()
+
+    def on_restore(self, event=None):
+        if self.is_locked and not self.verify_in_progress:
+            self.verify_in_progress = True
+            self.verify_and_unlock()
+
+    def verify_and_unlock(self):
+        self.dialog_open = True
+        verifyDialog = VerifyWindowWindow()
+        self.wait_window(verifyDialog)
+        self.dialog_open = False
+
+        if verifyDialog.result:
+            try:
+                test_manager = EncryptionManager(verifyDialog.result['password'], verifyDialog.result['image_path'])
+                if self.credential_manager.credentials:
+                    test_manager.decrypt(self.credential_manager.credentials[0].password)
+                
+                self.encryption_manager = test_manager
+                
+                self.dialog_open = False
+                self.verify_in_progress = False
+
+                self.unlock_application()
+
+                self.refresh_table()
+                messagebox.showinfo("Success", "Application unlocked")
+                logging.info("Application unlocked successfully")
+
+                self.reset_idle_timer()
+            except Exception as e:
+                messagebox.showerror("Error", "Incorrect Master Password or Image")
+                logging.error(f"Failed to unlock application: {e}")
+        else:
+            self.is_locked = True
+            self.verify_in_progress = False
+            self.destroy()
+
     def _create_widgets(self):
         # Menu bar
         menubar = tk.Menu(self)
@@ -514,11 +604,15 @@ class PasswordManagerApp(tk.Tk):
         self.search_entry.pack(side=tk.LEFT, padx=10)
         self.search_entry.bind("<KeyRelease>", lambda e: self.search_credentials())
         
-        ttk.Button(top_frame, text="➕ Add", command=self.add_credential, width=10).pack(side=tk.LEFT, padx=2)
-        ttk.Button(top_frame, text="✏️ Edit", command=self.edit_credential, width=10).pack(side=tk.LEFT, padx=2)
-        ttk.Button(top_frame, text="❌ Delete", command=self.delete_credential, width=10).pack(side=tk.LEFT, padx=2)
-        ttk.Button(top_frame, text="↻ Refresh", command=self.refresh_table, width=10).pack(side=tk.LEFT, padx=2)
-        
+        self.add_button = ttk.Button(top_frame, text="➕ Add", command=self.add_credential, width=10)
+        self.add_button.pack(side=tk.LEFT, padx=2)
+        self.edit_button = ttk.Button(top_frame, text="✏️ Edit", command=self.edit_credential, width=10)
+        self.edit_button.pack(side=tk.LEFT, padx=2)
+        self.delete_button = ttk.Button(top_frame, text="❌ Delete", command=self.delete_credential, width=10)
+        self.delete_button.pack(side=tk.LEFT, padx=2)
+        self.refresh_button = ttk.Button(top_frame, text="↻ Refresh", command=self.refresh_table, width=10)
+        self.refresh_button.pack(side=tk.LEFT, padx=2)
+
         self.copy_password_button = ttk.Button(top_frame, text="Copy Password", command=self.copy_password, width=15)
         self.copy_password_button.pack(side=tk.RIGHT, padx=2)
 
@@ -546,7 +640,7 @@ class PasswordManagerApp(tk.Tk):
         self.status_var = tk.StringVar(value="Ready")
         status_bar = ttk.Label(self, textvariable=self.status_var, relief=tk.SUNKEN)
         status_bar.pack(fill=tk.X, padx=15, pady=(10, 5))
-    
+
     def update_clipboard_timer(self):
         if self.clipboard_timer > 0:
             self.clipboard_label.config(text=f"Clipboard cleared in {self.clipboard_timer}s")
@@ -559,7 +653,6 @@ class PasswordManagerApp(tk.Tk):
                 logging.info("Clipboard cleared after timeout")
         else:
             self.clipboard_label.config(text="")
-    
 
     def refresh_table(self):
         for item in self.tree.get_children():
@@ -587,8 +680,12 @@ class PasswordManagerApp(tk.Tk):
         self.status_var.set(f"Found: {len(results)} credential(s)")
     
     def add_credential(self):
+        self.dialog_open = True
+        self.lock_application()
         dialog = CredentialDialog(self)
         self.wait_window(dialog)
+        self.dialog_open = False
+        self.unlock_application()
         
         if dialog.result:
             self.credential_manager.add_credential(dialog.result)
@@ -609,8 +706,12 @@ class PasswordManagerApp(tk.Tk):
         index = self.tree.index(selection[0])
         credential = self.credential_manager.credentials[index]
         
+        self.dialog_open = True
+        self.lock_application()
         verifyDialog = VerifyWindowWindow()
         self.wait_window(verifyDialog)
+        self.dialog_open = False
+        self.unlock_application()
 
         if verifyDialog.result:
             try:
@@ -642,8 +743,12 @@ class PasswordManagerApp(tk.Tk):
             self.after(0, lambda: self.attributes('-topmost', False))
             return
         
+        self.dialog_open = True
+        self.lock_application()
         verifyDialog = VerifyWindowWindow()
         self.wait_window(verifyDialog)
+        self.dialog_open = False
+        self.unlock_application()
 
         if verifyDialog.result:
             try:
@@ -679,8 +784,12 @@ class PasswordManagerApp(tk.Tk):
         username = self.credential_manager.credentials[index].username
         password = self.credential_manager.credentials[index].password
         
+        self.dialog_open = True
+        self.lock_application()
         verifyDialog = VerifyWindowWindow()
         self.wait_window(verifyDialog)
+        self.dialog_open = False
+        self.unlock_application()
 
         if verifyDialog.result:
             try:
@@ -701,6 +810,7 @@ class PasswordManagerApp(tk.Tk):
                 self.attributes('-topmost', True)
                 self.after(0, lambda: self.attributes('-topmost', False))
             finally:
+                self.dialog_open = False
                 verifyDialog.destroy()
             
     def sort_tree(self, col):
