@@ -1,0 +1,10 @@
+{
+    "password_length": 16,
+    "use_uppercase": true,
+    "use_lowercase": true,
+    "use_numbers": true,
+    "use_symbols": true,
+    "idle_timeout": 60000,
+    "on_minimize_lock": true,
+    "clipboard_timeout": 30
+}

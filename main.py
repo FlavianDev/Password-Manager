@@ -14,6 +14,7 @@ from pathlib import Path
 import pyperclip
 import time
 import hashlib
+from tkinter import simpledialog
 
 # Configure logging
 logging.basicConfig(
@@ -269,6 +270,8 @@ class VerifyWindowWindow(tk.Toplevel):
 
         self._create_widgets()
         self.center_window()
+        self.grab_set()
+        self.focus_set()
     
     def _create_widgets(self):
         # Main frame
@@ -332,6 +335,176 @@ class VerifyWindowWindow(tk.Toplevel):
         self.result = None
         self.destroy()
 
+class SettingsWindow(tk.Toplevel):
+    # Settings window for managing application preferences.
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.title("Settings")
+        self.geometry("500x600")
+        self.resizable(False, False)
+        self.settings_file = "settings.json"
+        self.settings = self.load_settings()
+        
+        self._create_widgets()
+        self.center_window()
+        self.grab_set()
+        self.focus_set()
+    
+    def load_settings(self):
+        """Load settings from file or return defaults."""
+        if os.path.exists(self.settings_file):
+            try:
+                with open(self.settings_file, 'r') as f:
+                    return json.load(f)
+            except Exception as e:
+                logging.error(f"Error loading settings: {e}")
+                return self.get_default_settings()
+        return self.get_default_settings()
+    
+    def get_default_settings(self):
+        """Return default settings."""
+        return {
+            "password_length": 16,
+            "use_uppercase": True,
+            "use_lowercase": True,
+            "use_numbers": True,
+            "use_symbols": True,
+            "idle_timeout": 60000,
+            "on_minimize_lock": True,
+            "clipboard_timeout": 30
+        }
+    
+    def save_settings(self):
+        """Save settings to file."""
+        try:
+            settings = {
+                "password_length": self.length_var.get(),
+                "use_uppercase": self.upper_var.get(),
+                "use_lowercase": self.lower_var.get(),
+                "use_numbers": self.num_var.get(),
+                "use_symbols": self.sym_var.get(),
+                "idle_timeout": self.idle_var.get() * 1000,
+                "on_minimize_lock": self.minimize_lock_var.get(),
+                "clipboard_timeout": self.clipboard_var.get()
+            }
+            with open(self.settings_file, 'w') as f:
+                json.dump(settings, f, indent=4)
+            logging.info("Settings saved successfully")
+            messagebox.showinfo("Success", "Settings saved successfully")
+            self.attributes('-topmost', True)
+            self.after(0, lambda: self.attributes('-topmost', False))
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save settings: {e}")
+            logging.error(f"Error saving settings: {e}")
+    
+    def _create_widgets(self):
+        settings_frame = ttk.Frame(self, padding=15)
+        settings_frame.pack(fill=tk.BOTH, expand=True)
+
+        pass_info = ttk.LabelFrame(settings_frame, text="Password Generator Settings", padding=15)
+        pass_info.pack(fill=tk.X, expand=True, pady=8)
+        pass_info.columnconfigure(0, weight=1)
+
+        frame = ttk.Frame(pass_info)
+        frame.pack(fill=tk.X, pady=5)
+
+        # Password length row
+        length_row = ttk.Frame(frame)
+        length_row.pack(fill=tk.X, pady=(0, 10))
+
+        ttk.Label(length_row, text="Password Length:").pack(side=tk.LEFT)
+        self.length_var = tk.IntVar(value=self.settings.get("password_length", 16))
+        ttk.Spinbox(
+            length_row, from_=8, to=64, textvariable=self.length_var, width=6
+        ).pack(side=tk.LEFT, padx=10)
+
+        # Options section (checkboxes)
+        options_frame = ttk.Frame(frame)
+        options_frame.pack(fill=tk.X, pady=5)
+
+        self.upper_var = tk.BooleanVar(value=self.settings.get("use_uppercase", True))
+        self.lower_var = tk.BooleanVar(value=self.settings.get("use_lowercase", True))
+        self.num_var = tk.BooleanVar(value=self.settings.get("use_numbers", True))
+        self.sym_var = tk.BooleanVar(value=self.settings.get("use_symbols", True))
+
+        for text, var in [
+            ("Uppercase Letters", self.upper_var),
+            ("Lowercase Letters", self.lower_var),
+            ("Numbers", self.num_var),
+            ("Symbols", self.sym_var),
+        ]:
+            ttk.Checkbutton(options_frame, text=text, variable=var).pack(anchor=tk.W, pady=2)
+        
+        # Idle timeout settings
+        timeout_info = ttk.LabelFrame(settings_frame, text="Security Settings", padding=15)
+        timeout_info.pack(fill=tk.X, expand=True, pady=8)
+        timeout_info.columnconfigure(0, weight=1)
+
+        # Lock on idle
+        idle_row = ttk.Frame(timeout_info)
+        idle_row.pack(fill=tk.X, pady=(0, 10))
+
+        ttk.Label(idle_row, text="Lock on Idle (seconds):").pack(side=tk.LEFT)
+        self.idle_var = tk.IntVar(value=self.settings.get("idle_timeout", 60000) // 1000)
+        ttk.Spinbox(
+            idle_row, from_=10, to=600, textvariable=self.idle_var, width=6
+        ).pack(side=tk.LEFT, padx=10)
+
+        # Minimize lock checkbox
+        minimize_row = ttk.Frame(timeout_info)
+        minimize_row.pack(fill=tk.X, pady=(0, 10))
+
+        self.minimize_lock_var = tk.BooleanVar(value=self.settings.get("on_minimize_lock", True))
+        ttk.Checkbutton(minimize_row, text="Lock application when minimized", variable=self.minimize_lock_var).pack(anchor=tk.W)
+
+        # Clipboard timeout
+        clipboard_row = ttk.Frame(timeout_info)
+        clipboard_row.pack(fill=tk.X, pady=(0, 10))
+
+        ttk.Label(clipboard_row, text="Clear clipboard after copy (seconds):").pack(side=tk.LEFT)
+        self.clipboard_var = tk.IntVar(value=self.settings.get("clipboard_timeout", 30))
+        ttk.Spinbox(
+            clipboard_row, from_=0, to=600, textvariable=self.clipboard_var, width=6
+        ).pack(side=tk.LEFT, padx=10)
+
+        # Data settings
+        data_info = ttk.LabelFrame(settings_frame, text="Data Management", padding=15)
+        data_info.pack(fill=tk.X, expand=True, pady=8)
+        data_info.columnconfigure(0, weight=1)
+
+        ttk.Button(data_info, text="Clear All Data", command=self.clear_data).pack(pady=10)
+        
+        # Buttons
+        button_frame = ttk.Frame(settings_frame)
+        button_frame.pack(fill=tk.X, pady=20)
+        
+        ttk.Button(button_frame, text="Save", command=self.save_settings, width=20).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Cancel", command=self.destroy, width=20).pack(side=tk.LEFT, padx=5)
+    
+    def center_window(self):
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f"{width}x{height}+{x}+{y}")
+    
+    def clear_data(self):
+        """Clear all stored credentials after verification."""
+        
+        if messagebox.askyesno("Confirm", "Are you sure you want to clear all data? This action cannot be undone."):
+            try:
+                if os.path.exists("credentials.enc"):
+                    os.remove("credentials.enc")
+                messagebox.showinfo("Success", "All data cleared successfully")
+                logging.info("All data cleared via settings")
+                self.attributes('-topmost', True)
+                self.after(0, lambda: self.attributes('-topmost', False))
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to clear data: {e}")
+                logging.error(f"Error clearing data: {e}")
+
 class CredentialDialog(tk.Toplevel):
     # Dialog for adding/editing credentials.
     
@@ -360,11 +533,13 @@ class CredentialDialog(tk.Toplevel):
         self.username_entry.grid(row=1, column=1, sticky=tk.EW, pady=5)
         
         # Password
-        ttk.Label(main_frame, text="Password *", font=('Segoe UI', 10, 'bold')).grid(row=2, column=0, sticky=tk.W, pady=5)
+        password_text = "Password *"
+
+        ttk.Label(main_frame, text=password_text, font=('Segoe UI', 10, 'bold')).grid(row=2, column=0, sticky=tk.W, pady=5)
         password_frame = ttk.Frame(main_frame)
         password_frame.grid(row=2, column=1, sticky=tk.EW, pady=5)
         
-        self.password_entry = ttk.Entry(password_frame, width=30, show="*")
+        self.password_entry = ttk.Entry(password_frame, width=30, show="•")
         self.password_entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         ttk.Button(password_frame, text="Generate", width=10,
@@ -485,6 +660,11 @@ class PasswordManagerApp(tk.Tk):
         self.idle_timer = 60000
         self.idle_timeout = None
 
+        # Load settings
+        self.settings_file = "settings.json"
+        self.settings = self.load_settings()
+        self.idle_timer = self.settings.get("idle_timeout", 60000)
+
         self._create_widgets()
         self.refresh_table()
         
@@ -495,6 +675,30 @@ class PasswordManagerApp(tk.Tk):
         self.bind("<KeyPress>", self.reset_idle_timer)
         self.bind_all("<Motion>", self.reset_idle_timer)
         self.bind_all("<KeyPress>", self.reset_idle_timer)
+    
+    def load_settings(self):
+        """Load settings from file or return defaults."""
+        if os.path.exists(self.settings_file):
+            try:
+                with open(self.settings_file, 'r') as f:
+                    return json.load(f)
+            except Exception as e:
+                logging.error(f"Error loading settings: {e}")
+                return self.get_default_settings()
+        return self.get_default_settings()
+    
+    def get_default_settings(self):
+        """Return default settings."""
+        return {
+            "password_length": 16,
+            "use_uppercase": True,
+            "use_lowercase": True,
+            "use_numbers": True,
+            "use_symbols": True,
+            "idle_timeout": 60000,
+            "on_minimize_lock": True,
+            "clipboard_timeout": 30
+        }
     
     def lock_application(self):
         self.is_locked = True
@@ -531,7 +735,18 @@ class PasswordManagerApp(tk.Tk):
         if self.idle_timer:
             self.after_cancel(self.idle_timer)
 
-        if not self.is_locked:
+        # Load current settings to check minimize lock setting
+        settings_file = "settings.json"
+        minimize_lock = True  # default
+        if os.path.exists(settings_file):
+            try:
+                with open(settings_file, 'r') as f:
+                    settings = json.load(f)
+                    minimize_lock = settings.get("on_minimize_lock", True)
+            except:
+                pass
+
+        if not self.is_locked and minimize_lock:
             self.lock_application()
             self.status_var.set("Application locked due to being minimized - please re-verify to unlock")
             logging.info("Application minimized - locked")
@@ -589,9 +804,12 @@ class PasswordManagerApp(tk.Tk):
         self.config(menu=menubar)
         
         file_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="Backup", menu=file_menu)
+        menubar.add_cascade(label="Menu", menu=file_menu)
         file_menu.add_command(label="Export Backup", command=self.export_backup)
         file_menu.add_command(label="Import Backup", command=self.import_backup)
+        file_menu.add_separator()
+        file_menu.add_command(label="View Logs", command=self.open_logs)
+        file_menu.add_command(label="Settings", command=self.open_settings)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.on_closing)
         
@@ -799,8 +1017,23 @@ class PasswordManagerApp(tk.Tk):
                 pyperclip.copy(decrypted_password)
                 logging.info(f"Password copied to clipboard: [{service} | {username}]")
                 self.copy_password_button.config(state=tk.DISABLED)
-                self.clipboard_timer = 30
-                self.update_clipboard_timer()
+                
+                # Load clipboard timeout setting
+                settings_file = "settings.json"
+                clipboard_timeout = 30  # default
+                if os.path.exists(settings_file):
+                    try:
+                        with open(settings_file, 'r') as f:
+                            settings = json.load(f)
+                            clipboard_timeout = settings.get("clipboard_timeout", 30)
+                    except:
+                        pass
+                
+                if clipboard_timeout > 0:
+                    self.clipboard_timer = clipboard_timeout
+                    self.update_clipboard_timer()
+                else:
+                    self.copy_password_button.config(state=tk.NORMAL)
                 messagebox.showinfo("Success", "Password copied to clipboard")
                 self.attributes('-topmost', True)
                 self.after(0, lambda: self.attributes('-topmost', False))
@@ -820,6 +1053,23 @@ class PasswordManagerApp(tk.Tk):
         for index, (val, k) in enumerate(items):
             self.tree.move(k, "", index)
     
+    def open_logs(self):
+        log_path = os.path.join(os.getcwd(), "password_manager.log")
+        if os.path.exists(log_path):
+            os.startfile(log_path)
+        else:
+            messagebox.showwarning("Warning", "Could not find log file")
+            self.attributes('-topmost', True)
+            self.after(0, lambda: self.attributes('-topmost', False))
+
+    def open_settings(self):
+        self.dialog_open = True
+        self.lock_application()
+        settings_window = SettingsWindow()
+        self.wait_window(settings_window)
+        self.dialog_open = False
+        self.unlock_application()
+
     def export_backup(self):
         filepath = filedialog.asksaveasfilename(
             defaultextension=".enc",
