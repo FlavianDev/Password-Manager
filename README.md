@@ -1,42 +1,56 @@
-# Password Manager
+# 🔐 Password Manager v2.0
 
-A password manager made in Python with a Tkinter GUI, credential encryption using Fernet, password generation, search, backup import/export, and logging. Made by [@flaviandev](https://www.github.com/flaviandev), 2025
+A modern, secure **password manager** built with **Python** and **Tkinter**, featuring session-based authentication, encrypted local storage, unique per-user salts, and a clean service-oriented architecture.
 
-## How to use
+**Made by [@flaviandev](https://github.com/flaviandev) · 2025**
 
-### Before opening/building
+---
 
-#### Step 1: Add encryption "salt"
+## ✨ Features
 
-Inside main.py at line 31, change the placeholder salt with a secure random salt. The salt can be any string, just make sure you remember it.
+### 🔒 Security
+- Session-based authentication with configurable timeout  
+- Unique encryption salt generated once per user  
+- Master password confirmation on first setup  
+- Encrypted credential storage (Fernet / AES)  
+- Automatic session invalidation and clipboard auto-clear  
 
-#### Step 2: Make executable
+### 🧼 Data Safety
+- Full input validation & sanitization  
+- Secure, temporary password reveal (auto-hide)  
+- No plaintext passwords stored on disk or logs  
 
-After replacing the placeholder salt, you can build the executable:
+### 🧠 User Experience
+- Fast search and filtering  
+- Built-in password generator with customizable rules  
+- Clean, responsive Tkinter interface  
 
-```
-  pyinstaller main.py --onedir --noconsole
-```
+### 🏗️ Architecture
+Service-based, modular design:
+- **AuthService** – authentication, key derivation, session handling  
+- **StorageService** – encrypted CRUD operations and backups  
+- **ValidationService** – input validation and sanitization  
+- **ConfigService** & **LoggerService**
 
-### Using the app
+---
 
-#### Step 1: Login
+## 🛠️ Requirements
 
-The app uses a master password login, on first launch, you can login with any password. After logging in and adding credentials, an encrypted storage file will be created automatically. Afterwards, you can only use the same password used on the first login to decrypt the storage file.
+- **Python 3.8+**
+- Dependencies:
+  ```bash
+  pip install cryptography pyperclip
 
-#### Step 2: Managing credentials
+## ⬇️ Download & Usage
 
-After logging in using the master password, the main window will be shown. Here you can search, add, edit or delete credentials.
+### Download Executable
+👉 **[Download the latest executable](https://github.com/flaviandev/PasswordManager/releases/latest)**
 
-Each credential entry contains:
-* Service Name
-* Username
-* Password
-* Tags
-* Notes
+### Security Notes
+- Master password is **never stored**
+- Encryption salt is generated once and stored in plaintext JSON
+- Uses industry-standard cryptography
+- Session timeout prevents unauthorized access
 
-You can generate a password inside of the app where you determine the length and what characters are used.
-
-#### Step 3: Backup
-
-You can import / export encrypted backup for safe keeping, in the main window at the top left, press on the file button.
+### License
+Open source — free to use, modify, and distribute.

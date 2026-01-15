@@ -21,15 +21,11 @@ imports:
     <a href="#_collections_abc">_collections_abc</a>
  &#8226;   <a href="#_weakrefset">_weakrefset</a>
  &#8226;   <a href="#abc">abc</a>
- &#8226;   <a href="#base64">base64</a>
+ &#8226;   <a href="#auth_service">auth_service</a>
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#collections">collections</a>
+ &#8226;   <a href="#config_service">config_service</a>
  &#8226;   <a href="#copyreg">copyreg</a>
- &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
- &#8226;   <a href="#cryptography.hazmat.primitives">cryptography.hazmat.primitives</a>
- &#8226;   <a href="#cryptography.hazmat.primitives.hashes">cryptography.hazmat.primitives.hashes</a>
- &#8226;   <a href="#cryptography.hazmat.primitives.kdf.pbkdf2">cryptography.hazmat.primitives.kdf.pbkdf2</a>
- &#8226;   <a href="#datetime">datetime</a>
  &#8226;   <a href="#encodings">encodings</a>
  &#8226;   <a href="#encodings._win_cp_codecs">encodings._win_cp_codecs</a>
  &#8226;   <a href="#encodings.aliases">encodings.aliases</a>
@@ -156,43 +152,35 @@ imports:
  &#8226;   <a href="#enum">enum</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#genericpath">genericpath</a>
- &#8226;   <a href="#hashlib">hashlib</a>
  &#8226;   <a href="#heapq">heapq</a>
  &#8226;   <a href="#io">io</a>
- &#8226;   <a href="#json">json</a>
  &#8226;   <a href="#keyword">keyword</a>
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#locale">locale</a>
- &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#logger_service">logger_service</a>
+ &#8226;   <a href="#main_app">main_app</a>
  &#8226;   <a href="#ntpath">ntpath</a>
  &#8226;   <a href="#operator">operator</a>
  &#8226;   <a href="#os">os</a>
- &#8226;   <a href="#pathlib">pathlib</a>
  &#8226;   <a href="#posixpath">posixpath</a>
  &#8226;   <a href="#pyi_rth__tkinter.py">pyi_rth__tkinter.py</a>
  &#8226;   <a href="#pyi_rth_cryptography_openssl.py">pyi_rth_cryptography_openssl.py</a>
  &#8226;   <a href="#pyi_rth_inspect.py">pyi_rth_inspect.py</a>
- &#8226;   <a href="#pyperclip">pyperclip</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#re._casefix">re._casefix</a>
  &#8226;   <a href="#re._compiler">re._compiler</a>
  &#8226;   <a href="#re._constants">re._constants</a>
  &#8226;   <a href="#re._parser">re._parser</a>
  &#8226;   <a href="#reprlib">reprlib</a>
- &#8226;   <a href="#secrets">secrets</a>
  &#8226;   <a href="#sre_compile">sre_compile</a>
  &#8226;   <a href="#sre_constants">sre_constants</a>
  &#8226;   <a href="#sre_parse">sre_parse</a>
  &#8226;   <a href="#stat">stat</a>
- &#8226;   <a href="#string">string</a>
- &#8226;   <a href="#time">time</a>
- &#8226;   <a href="#tkinter">tkinter</a>
- &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
- &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
- &#8226;   <a href="#tkinter.simpledialog">tkinter.simpledialog</a>
- &#8226;   <a href="#tkinter.ttk">tkinter.ttk</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
  &#8226;   <a href="#traceback">traceback</a>
  &#8226;   <a href="#types">types</a>
+ &#8226;   <a href="#ui_components">ui_components</a>
+ &#8226;   <a href="#validation_service">validation_service</a>
  &#8226;   <a href="#warnings">warnings</a>
  &#8226;   <a href="#weakref">weakref</a>
 
@@ -1508,6 +1496,34 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="auth_service"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/auth_service.py" type="text/plain"><tt>auth_service</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#base64">base64</a>
+ &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
+ &#8226;   <a href="#cryptography.hazmat.primitives">cryptography.hazmat.primitives</a>
+ &#8226;   <a href="#cryptography.hazmat.primitives.hashes">cryptography.hazmat.primitives.hashes</a>
+ &#8226;   <a href="#cryptography.hazmat.primitives.kdf.pbkdf2">cryptography.hazmat.primitives.kdf.pbkdf2</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#hashlib">hashlib</a>
+ &#8226;   <a href="#json">json</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+ &#8226;   <a href="#secrets">secrets</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="base64"></a>
   <a target="code" href="///C:/Users/Flavian/AppData/Local/Python/pythoncore-3.14-64/Lib/base64.py" type="text/plain"><tt>base64</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -1520,12 +1536,12 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#cryptography.fernet">cryptography.fernet</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
  &#8226;   <a href="#email._encoded_words">email._encoded_words</a>
  &#8226;   <a href="#email.base64mime">email.base64mime</a>
  &#8226;   <a href="#email.encoders">email.encoders</a>
  &#8226;   <a href="#encodings.base64_codec">encodings.base64_codec</a>
- &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
  &#8226;   <a href="#secrets">secrets</a>
  &#8226;   <a href="#ssl">ssl</a>
@@ -1967,6 +1983,25 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="config_service"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/config_service.py" type="text/plain"><tt>config_service</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#json">json</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="contextlib"></a>
   <a target="code" href="///C:/Users/Flavian/AppData/Local/Python/pythoncore-3.14-64/Lib/contextlib.py" type="text/plain"><tt>contextlib</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -2036,6 +2071,7 @@ imported by:
  &#8226;   <a href="#email.generator">email.generator</a>
  &#8226;   <a href="#gettext">gettext</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
+ &#8226;   <a href="#main_app">main_app</a>
  &#8226;   <a href="#tarfile">tarfile</a>
  &#8226;   <a href="#weakref">weakref</a>
 
@@ -2168,7 +2204,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
 
   </div>
 
@@ -2466,7 +2503,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#cryptography.fernet">cryptography.fernet</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
  &#8226;   <a href="#cryptography.hazmat._oid">cryptography.hazmat._oid</a>
  &#8226;   <a href="#cryptography.hazmat.backends.openssl.backend">cryptography.hazmat.backends.openssl.backend</a>
  &#8226;   <a href="#cryptography.hazmat.primitives._asymmetric">cryptography.hazmat.primitives._asymmetric</a>
@@ -2484,7 +2522,6 @@ imported by:
  &#8226;   <a href="#cryptography.hazmat.primitives.kdf">cryptography.hazmat.primitives.kdf</a>
  &#8226;   <a href="#cryptography.hazmat.primitives.kdf.pbkdf2">cryptography.hazmat.primitives.kdf.pbkdf2</a>
  &#8226;   <a href="#cryptography.hazmat.primitives.padding">cryptography.hazmat.primitives.padding</a>
- &#8226;   <a href="#main.py">main.py</a>
 
   </div>
 
@@ -2814,7 +2851,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#cryptography.fernet">cryptography.fernet</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
  &#8226;   <a href="#cryptography.hazmat._oid">cryptography.hazmat._oid</a>
  &#8226;   <a href="#cryptography.hazmat.backends.openssl.backend">cryptography.hazmat.backends.openssl.backend</a>
  &#8226;   <a href="#cryptography.hazmat.primitives">cryptography.hazmat.primitives</a>
@@ -2825,7 +2863,6 @@ imported by:
  &#8226;   <a href="#cryptography.hazmat.primitives.asymmetric.utils">cryptography.hazmat.primitives.asymmetric.utils</a>
  &#8226;   <a href="#cryptography.hazmat.primitives.hmac">cryptography.hazmat.primitives.hmac</a>
  &#8226;   <a href="#cryptography.hazmat.primitives.kdf.pbkdf2">cryptography.hazmat.primitives.kdf.pbkdf2</a>
- &#8226;   <a href="#main.py">main.py</a>
 
   </div>
 
@@ -2888,7 +2925,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#auth_service">auth_service</a>
 
   </div>
 
@@ -2995,6 +3032,7 @@ imported by:
  &#8226;   <a href="#ctypes.macholib">ctypes.macholib</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
  &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#logger_service">logger_service</a>
  &#8226;   <a href="#platform">platform</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
 
@@ -3217,10 +3255,13 @@ imports:
   <div class="import">
 imported by:
     <a href="#_strptime">_strptime</a>
+ &#8226;   <a href="#auth_service">auth_service</a>
  &#8226;   <a href="#calendar">calendar</a>
  &#8226;   <a href="#email.utils">email.utils</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
- &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#logger_service">logger_service</a>
+ &#8226;   <a href="#main_app">main_app</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
 
   </div>
 
@@ -6627,8 +6668,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#hmac">hmac</a>
- &#8226;   <a href="#main.py">main.py</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#hmac">hmac</a>
  &#8226;   <a href="#random">random</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
 
@@ -7439,11 +7480,13 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#importlib.metadata">importlib.metadata</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#config_service">config_service</a>
+ &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
  &#8226;   <a href="#json.decoder">json.decoder</a>
  &#8226;   <a href="#json.encoder">json.encoder</a>
  &#8226;   <a href="#json.scanner">json.scanner</a>
- &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
 
   </div>
 
@@ -7576,6 +7619,27 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="logger_service"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/logger_service.py" type="text/plain"><tt>logger_service</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#ctypes">ctypes</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="logging"></a>
   <a target="code" href="///C:/Users/Flavian/AppData/Local/Python/pythoncore-3.14-64/Lib/logging/__init__.py" type="text/plain"><tt>logging</tt></a>
 <span class="moduletype">Package</span>  <div class="import">
@@ -7600,7 +7664,7 @@ imports:
 imported by:
     <a href="#hashlib">hashlib</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
- &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#logger_service">logger_service</a>
 
   </div>
 
@@ -7624,6 +7688,42 @@ imported by:
     <a href="#shutil">shutil</a>
  &#8226;   <a href="#tarfile">tarfile</a>
  &#8226;   <a href="#zipfile">zipfile</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="main_app"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/main_app.py" type="text/plain"><tt>main_app</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#config_service">config_service</a>
+ &#8226;   <a href="#copy">copy</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#logger_service">logger_service</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#password_generator">password_generator</a>
+ &#8226;   <a href="#pyperclip">pyperclip</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
+ &#8226;   <a href="#subprocess">subprocess</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#time">time</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.colorchooser">tkinter.colorchooser</a>
+ &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
+ &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
+ &#8226;   <a href="#tkinter.simpledialog">tkinter.simpledialog</a>
+ &#8226;   <a href="#tkinter.ttk">tkinter.ttk</a>
+ &#8226;   <a href="#ui_components">ui_components</a>
+ &#8226;   <a href="#validation_service">validation_service</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
 
   </div>
 
@@ -7840,8 +7940,10 @@ imported by:
     <a href="#_colorize">_colorize</a>
  &#8226;   <a href="#_strptime">_strptime</a>
  &#8226;   <a href="#argparse">argparse</a>
+ &#8226;   <a href="#auth_service">auth_service</a>
  &#8226;   <a href="#bz2">bz2</a>
  &#8226;   <a href="#compression.zstd._zstdfile">compression.zstd._zstdfile</a>
+ &#8226;   <a href="#config_service">config_service</a>
  &#8226;   <a href="#contextlib">contextlib</a>
  &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
  &#8226;   <a href="#cryptography.hazmat.bindings.openssl.binding">cryptography.hazmat.bindings.openssl.binding</a>
@@ -7865,9 +7967,11 @@ imported by:
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#locale">locale</a>
+ &#8226;   <a href="#logger_service">logger_service</a>
  &#8226;   <a href="#logging">logging</a>
  &#8226;   <a href="#lzma">lzma</a>
  &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
  &#8226;   <a href="#mimetypes">mimetypes</a>
  &#8226;   <a href="#netrc">netrc</a>
  &#8226;   <a href="#ntpath">ntpath</a>
@@ -7885,12 +7989,14 @@ imported by:
  &#8226;   <a href="#shutil">shutil</a>
  &#8226;   <a href="#socket">socket</a>
  &#8226;   <a href="#ssl">ssl</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
  &#8226;   <a href="#subprocess">subprocess</a>
  &#8226;   <a href="#tarfile">tarfile</a>
  &#8226;   <a href="#tempfile">tempfile</a>
  &#8226;   <a href="#threading">threading</a>
  &#8226;   <a href="#tkinter">tkinter</a>
  &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
+ &#8226;   <a href="#ui_components">ui_components</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
  &#8226;   <a href="#zipfile">zipfile</a>
  &#8226;   <a href="#zipfile._path.glob">zipfile._path.glob</a>
@@ -7913,6 +8019,23 @@ imported by:
     <a href="#os">os</a>
  &#8226;   <a href="#py_compile">py_compile</a>
  &#8226;   <a href="#tracemalloc">tracemalloc</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="password_generator"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/password_generator.py" type="text/plain"><tt>password_generator</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#secrets">secrets</a>
+ &#8226;   <a href="#string">string</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main_app">main_app</a>
 
   </div>
 
@@ -7946,12 +8069,14 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#importlib.metadata">importlib.metadata</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
  &#8226;   <a href="#importlib.resources._common">importlib.resources._common</a>
  &#8226;   <a href="#importlib.resources.abc">importlib.resources.abc</a>
  &#8226;   <a href="#importlib.resources.readers">importlib.resources.readers</a>
- &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#logger_service">logger_service</a>
  &#8226;   <a href="#pathlib._os">pathlib._os</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
  &#8226;   <a href="#zipfile._path">zipfile._path</a>
 
   </div>
@@ -8177,7 +8302,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#main_app">main_app</a>
 
   </div>
 
@@ -8328,6 +8453,7 @@ imported by:
  &#8226;   <a href="#typing">typing</a>
  &#8226;   <a href="#urllib.parse">urllib.parse</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
+ &#8226;   <a href="#validation_service">validation_service</a>
  &#8226;   <a href="#zipfile._path">zipfile._path</a>
  &#8226;   <a href="#zipfile._path.glob">zipfile._path.glob</a>
 
@@ -8464,7 +8590,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#password_generator">password_generator</a>
 
   </div>
 
@@ -8535,6 +8662,7 @@ imported by:
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
  &#8226;   <a href="#pathlib">pathlib</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
  &#8226;   <a href="#tarfile">tarfile</a>
  &#8226;   <a href="#tempfile">tempfile</a>
  &#8226;   <a href="#zipfile">zipfile</a>
@@ -8726,6 +8854,30 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="storage_service"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/storage_service.py" type="text/plain"><tt>storage_service</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#auth_service">auth_service</a>
+ &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#json">json</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+ &#8226;   <a href="#shutil">shutil</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="string"></a>
   <a target="code" href="///C:/Users/Flavian/AppData/Local/Python/pythoncore-3.14-64/Lib/string/__init__.py" type="text/plain"><tt>string</tt></a>
 <span class="moduletype">Package</span>  <div class="import">
@@ -8741,9 +8893,10 @@ imported by:
  &#8226;   <a href="#email._header_value_parser">email._header_value_parser</a>
  &#8226;   <a href="#email.quoprimime">email.quoprimime</a>
  &#8226;   <a href="#logging">logging</a>
- &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#ntpath">ntpath</a>
+ &#8226;   <a href="#password_generator">password_generator</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
+ &#8226;   <a href="#validation_service">validation_service</a>
 
   </div>
 
@@ -8820,6 +8973,7 @@ imports:
 imported by:
     <a href="#ctypes._aix">ctypes._aix</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
+ &#8226;   <a href="#main_app">main_app</a>
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#platform">platform</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
@@ -8882,6 +9036,7 @@ imported by:
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#locale">locale</a>
  &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#main_app">main_app</a>
  &#8226;   <a href="#mimetypes">mimetypes</a>
  &#8226;   <a href="#ntpath">ntpath</a>
  &#8226;   <a href="#os">os</a>
@@ -9032,6 +9187,7 @@ imported by:
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#importlib.util">importlib.util</a>
  &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#main_app">main_app</a>
  &#8226;   <a href="#subprocess">subprocess</a>
  &#8226;   <a href="#zipfile">zipfile</a>
 
@@ -9060,7 +9216,7 @@ imported by:
  &#8226;   <a href="#gzip">gzip</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#logging">logging</a>
- &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
  &#8226;   <a href="#random">random</a>
  &#8226;   <a href="#ssl">ssl</a>
@@ -9085,6 +9241,7 @@ imports:
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#tkinter.colorchooser">tkinter.colorchooser</a>
  &#8226;   <a href="#tkinter.constants">tkinter.constants</a>
  &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
  &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
@@ -9096,7 +9253,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#main_app">main_app</a>
+ &#8226;   <a href="#tkinter.colorchooser">tkinter.colorchooser</a>
  &#8226;   <a href="#tkinter.commondialog">tkinter.commondialog</a>
  &#8226;   <a href="#tkinter.constants">tkinter.constants</a>
  &#8226;   <a href="#tkinter.dialog">tkinter.dialog</a>
@@ -9104,6 +9262,25 @@ imported by:
  &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
  &#8226;   <a href="#tkinter.simpledialog">tkinter.simpledialog</a>
  &#8226;   <a href="#tkinter.ttk">tkinter.ttk</a>
+ &#8226;   <a href="#ui_components">ui_components</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="tkinter.colorchooser"></a>
+  <a target="code" href="///C:/Users/Flavian/AppData/Local/Python/pythoncore-3.14-64/Lib/tkinter/colorchooser.py" type="text/plain"><tt>tkinter.colorchooser</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.commondialog">tkinter.commondialog</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main_app">main_app</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
 
   </div>
 
@@ -9119,7 +9296,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#tkinter.filedialog">tkinter.filedialog</a>
+    <a href="#tkinter.colorchooser">tkinter.colorchooser</a>
+ &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
  &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
 
   </div>
@@ -9174,8 +9352,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#main_app">main_app</a>
  &#8226;   <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#ui_components">ui_components</a>
 
   </div>
 
@@ -9192,9 +9371,10 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#main_app">main_app</a>
  &#8226;   <a href="#tkinter">tkinter</a>
  &#8226;   <a href="#tkinter.simpledialog">tkinter.simpledialog</a>
+ &#8226;   <a href="#ui_components">ui_components</a>
 
   </div>
 
@@ -9211,7 +9391,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#main_app">main_app</a>
  &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
 
   </div>
@@ -9228,8 +9408,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#main_app">main_app</a>
  &#8226;   <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#ui_components">ui_components</a>
 
   </div>
 
@@ -9407,6 +9588,7 @@ imports:
 imported by:
     <a href="#_colorize">_colorize</a>
  &#8226;   <a href="#annotationlib">annotationlib</a>
+ &#8226;   <a href="#config_service">config_service</a>
  &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#cryptography.exceptions">cryptography.exceptions</a>
  &#8226;   <a href="#cryptography.fernet">cryptography.fernet</a>
@@ -9424,6 +9606,29 @@ imported by:
  &#8226;   <a href="#importlib.resources._common">importlib.resources._common</a>
  &#8226;   <a href="#importlib.resources.abc">importlib.resources.abc</a>
  &#8226;   <a href="#pyperclip">pyperclip</a>
+ &#8226;   <a href="#storage_service">storage_service</a>
+ &#8226;   <a href="#validation_service">validation_service</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="ui_components"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/ui_components.py" type="text/plain"><tt>ui_components</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#os">os</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
+ &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
+ &#8226;   <a href="#tkinter.ttk">tkinter.ttk</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
 
   </div>
 
@@ -9563,6 +9768,25 @@ imports:
 imported by:
     <a href="#urllib.error">urllib.error</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="validation_service"></a>
+  <a target="code" href="///C:/Users/Flavian/Documents/GitHub/PasswordManager/validation_service.py" type="text/plain"><tt>validation_service</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#re">re</a>
+ &#8226;   <a href="#string">string</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+ &#8226;   <a href="#main_app">main_app</a>
 
   </div>
 
