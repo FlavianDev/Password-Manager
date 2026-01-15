@@ -44,7 +44,7 @@ Service-based, modular design:
 ## ⬇️ Download & Usage
 
 ### Download Executable
-👉 **[Download the latest executable](https://github.com/flaviandev/PasswordManager/releases/latest)**
+👉 **[Download the latest executable](https://github.com/flaviandev/Password-Manager/releases/latest)**
 
 ### Security Notes
 - Master password is **never stored**
